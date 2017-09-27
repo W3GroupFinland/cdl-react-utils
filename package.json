@@ -19,7 +19,7 @@
     "library"
   ],
   "author": "City Dev Labs",
-  "private": true,
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/W3GroupFinland/cdl-react-utils/issues"
   },
