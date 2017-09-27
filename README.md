@@ -1,4 +1,4 @@
-# City Dev Labs React&Redux utility library
+# City Dev Labs utility library for React and Redux
 
 ## Installation
 
