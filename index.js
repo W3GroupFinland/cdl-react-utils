@@ -1,8 +1,23 @@
 import R from 'ramda';
 import { isImmutable } from 'immutable';
 
+/**
+ * Utility for two-way-binding objects in React component state.
+ * @function
+ * @param thisBind {React.Component} `this` of the component the function is used in.
+ */
 export function bindState(thisBind) {
+  /**
+   * @function
+   * @param path {Array.<string|number>|string} The path in the state to bind to.
+   * @param formatter {function} Optional formatter for the input value, for example
+   * for numeric fields.
+   */
   return (function innerBind(path, formatter = R.identity) {
+    if (!Array.isArray(path) && typeof path !== 'string') {
+      throw new Error('bindState: invalid path!');
+    }
+
     // If path is not an array use it as the key
     if (!Array.isArray(path)) {
       return {
@@ -13,12 +28,12 @@ export function bindState(thisBind) {
       };
     }
 
-    const head = R.head(path);
-    const tail = R.tail(path);
-
-    if (!head) {
+    if (path.length === 0) {
       throw new Error('bindState: invalid path!');
     }
+
+    const head = R.head(path);
+    const tail = R.tail(path);
 
     if (!tail) {
       return {
@@ -43,8 +58,22 @@ export function bindState(thisBind) {
   }).bind(thisBind);
 }
 
+
+/**
+ * Utility for two-way-binding Immutable.JS objects in React component state.
+ * @function
+ * @param thisBind {React.Component} `this` of the component the function is used in.
+ */
 export function bindStateImmutable(thisBind) {
+  /**
+   * @function
+   * @param path {Array.<string|number>} The path in the state to bind to.
+   * Must be atleast two keys deep.
+   * @param formatter {function} Optional formatter for the input value, for example
+   * for numeric fields.
+   */
   return (function innerBind(path, formatter = R.identity) {
+    // The path must be at least two keys deep.
     if (!Array.isArray(path) || path.length < 2) {
       throw new Error('bindStateImmutable: invalid path!');
     }
@@ -65,6 +94,12 @@ export function bindStateImmutable(thisBind) {
   }).bind(thisBind);
 }
 
+/**
+ * Utility for creating Redux reducers.
+ * @function
+ * @param initialState {object} Initial state of the reducer.
+ * @param reducers {object} Object containing the reducers, keyed by the action constant.
+ */
 export function createReducer(initialState, reducers) {
   return (state = initialState, action) => {
     const reducer = reducers[action.type];
