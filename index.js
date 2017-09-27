@@ -5,6 +5,7 @@ import { isImmutable } from 'immutable';
  * Utility for two-way-binding objects in React component state.
  * @function
  * @param thisBind {React.Component} `this` of the component the function is used in.
+ * @returns {bindState~innerBind}
  */
 export function bindState(thisBind) {
   /**
@@ -13,7 +14,7 @@ export function bindState(thisBind) {
    * @param formatter {function} Optional formatter for the input value, for example
    * for numeric fields.
    */
-  return (function innerBind(path, formatter = R.identity) {
+  function innerBind(path, formatter = R.identity) {
     if (!Array.isArray(path) && typeof path !== 'string') {
       throw new Error('bindState: invalid path!');
     }
@@ -55,7 +56,9 @@ export function bindState(thisBind) {
         [head]: R.set(pathLens, formatter(evt.target.value), base),
       }),
     };
-  }).bind(thisBind);
+  }
+
+  return innerBind.bind(thisBind);
 }
 
 
@@ -63,6 +66,7 @@ export function bindState(thisBind) {
  * Utility for two-way-binding Immutable.JS objects in React component state.
  * @function
  * @param thisBind {React.Component} `this` of the component the function is used in.
+ * @returns {bindStateImmutable~innerBind}
  */
 export function bindStateImmutable(thisBind) {
   /**
@@ -72,7 +76,7 @@ export function bindStateImmutable(thisBind) {
    * @param formatter {function} Optional formatter for the input value, for example
    * for numeric fields.
    */
-  return (function innerBind(path, formatter = R.identity) {
+  function innerBind(path, formatter = R.identity) {
     // The path must be at least two keys deep.
     if (!Array.isArray(path) || path.length < 2) {
       throw new Error('bindStateImmutable: invalid path!');
@@ -91,7 +95,9 @@ export function bindStateImmutable(thisBind) {
         [head]: this.state[head].setIn(tail, formatter(evt.target.value)),
       }),
     };
-  }).bind(thisBind);
+  }
+
+  return innerBind.bind(thisBind);
 }
 
 /**
