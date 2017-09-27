@@ -1,0 +1,38 @@
+{
+  "name": "cdl-react-utils",
+  "version": "1.0.0",
+  "description": "City Dev Labs utility library for React and Redux",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/W3GroupFinland/cdl-react-utils.git"
+  },
+  "keywords": [
+    "utility",
+    "react",
+    "redux",
+    "library"
+  ],
+  "author": "City Dev Labs",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/W3GroupFinland/cdl-react-utils/issues"
+  },
+  "homepage": "https://github.com/W3GroupFinland/cdl-react-utils#readme",
+  "dependencies": {
+    "immutable": "^3.8.1",
+    "ramda": "^0.24.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.0.1",
+    "eslint": "^4.7.2",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.4.0"
+  }
+}
