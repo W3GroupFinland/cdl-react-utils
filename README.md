@@ -1,6 +1,16 @@
 # City Dev Labs React&Redux utility library
 
+## Installation
+
+```shell
+npm i -S https://github.com/W3GroupFinland/cdl-react-utils
+```
+
+## Documentation
+
 Documentation can be found [here](https://github.com/W3GroupFinland/cdl-react-utils/blob/master/DOCS.md).
+
+## Development
 
 Available NPM scripts are:
 
