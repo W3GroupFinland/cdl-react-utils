@@ -24,7 +24,7 @@ export function bindState(thisBind) {
       return {
         value: this.state[path],
         onChange: evt => this.setState({
-          [path]: evt.target.value,
+          [path]: formatter(evt.target.value),
         }),
       };
     }
@@ -40,7 +40,7 @@ export function bindState(thisBind) {
       return {
         value: this.state[head],
         onChange: evt => this.setState({
-          [head]: evt.target.value,
+          [head]: formatter(evt.target.value),
         }),
       };
     }
