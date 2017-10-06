@@ -1,5 +1,4 @@
 import R from 'ramda';
-import { isImmutable } from 'immutable';
 
 /**
  * Utility for two-way-binding objects in React component state.
@@ -84,10 +83,6 @@ export function bindStateImmutable(thisBind) {
 
     const head = R.head(path);
     const tail = R.tail(path);
-
-    if (!isImmutable(this.state[head])) {
-      throw new Error(`bindStateImmutable: state property pointed by the head of the given path (\`this.state.${head}\`)  is not an immutable object!`);
-    }
 
     return {
       value: this.state[head].getIn(tail),

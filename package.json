@@ -1,6 +1,6 @@
 {
   "name": "cdl-react-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "City Dev Labs utility library for React and Redux",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,6 @@
   },
   "homepage": "https://github.com/W3GroupFinland/cdl-react-utils#readme",
   "dependencies": {
-    "immutable": "^3.8.1",
     "ramda": "^0.24.1"
   },
   "devDependencies": {
