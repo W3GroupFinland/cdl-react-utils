@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/W3GroupFinland/cdl-react-utils#readme",
   "dependencies": {
-    "ramda": "^0.24.1"
+    "prop-types": "^15.6.0",
+    "ramda": "^0.24.1",
+    "react": "^16.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
