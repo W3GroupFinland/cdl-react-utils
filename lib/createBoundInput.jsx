@@ -11,23 +11,71 @@ export default function createBoundInput(thisBind) {
   const bindDefault = bindState(thisBind);
   const bindImmutable = bindStateImmutable(thisBind);
 
-  const createCheckboxChangeHandler = R.memoize((path) => {
+  function toggleInArray(array, value) {
+    return array.includes(value)
+      ? R.without([value], array)
+      : R.append(value, array);
+  }
+
+  const createCheckboxHandler = R.memoize((path) => {
+    if (!Array.isArray(path) && typeof path !== 'string') {
+      throw new Error(`BoundInput: invalid path: ${path.toString()}`);
+    }
+
+    // If path is not an array use it as the key
+    if (!Array.isArray(path)) {
+      return evt => thisBind.setState({
+        [path]: toggleInArray(thisBind.state[path], evt.target.value),
+      });
+    }
+
+    if (path.length === 0) {
+      throw new Error(`BoundInput: invalid path: ${path.toString()}`);
+    }
+
     const lens = lensPath(path);
 
+    const head = R.head(path);
+    const tail = R.tail(path);
+
+    if (!tail) {
+      return evt => thisBind.setState({
+        [head]: toggleInArray(R.view(lens, thisBind.state), evt.target.value),
+      });
+    }
+
+    return (evt) => {
+      const baseLens = R.lensProp(head);
+      const pathLens = R.lensPath(tail);
+      const base = R.view(baseLens, thisBind.state);
+
+      thisBind.setState({
+        [head]: R.set(
+          pathLens,
+          toggleInArray(R.view(lens, thisBind.state), evt.target.value),
+          base
+        ),
+      });
+    };
+  });
+
+  const createToggleHandler = R.memoize((path) => {
     if (!Array.isArray(path) && typeof path !== 'string') {
-      throw new Error('bindState: invalid path!');
+      throw new Error('BoundInput: invalid path!');
     }
 
     // If path is not an array use it as the key
     if (!Array.isArray(path)) {
       return () => thisBind.setState({
-        [path]: !R.view(lens, thisBind.state),
+        [path]: !thisBind.state[path],
       });
     }
 
     if (path.length === 0) {
-      throw new Error('bindState: invalid path!');
+      throw new Error('BoundInput: invalid path!');
     }
+
+    const lens = lensPath(path);
 
     const head = R.head(path);
     const tail = R.tail(path);
@@ -38,25 +86,44 @@ export default function createBoundInput(thisBind) {
       });
     }
 
-    const baseLens = R.lensProp(head);
-    const pathLens = R.lensPath(tail);
-    const base = R.view(baseLens, thisBind.state);
+    return () => {
+      const baseLens = R.lensProp(head);
+      const pathLens = R.lensPath(tail);
+      const base = R.view(baseLens, thisBind.state);
 
-    return () => thisBind.setState({
-      [head]: R.set(pathLens, !R.view(lens, thisBind.state), base),
-    });
+      thisBind.setState({
+        [head]: R.set(pathLens, !R.view(lens, thisBind.state), base),
+      });
+    };
   });
 
-  function checkboxBind(path) {
-    const lens = lensPath(path);
+  function checkboxBind(path, value) {
+    const lens = lensPath(Array.isArray(path) ? path : [path]);
 
     return {
-      checked: R.view(lens, thisBind.state),
-      onClick: createCheckboxChangeHandler(thisBind, path),
+      checked: R.view(lens, thisBind.state).includes(value),
+      onChange: createCheckboxHandler(path),
     };
   }
 
-  function BoundInput({ type, path, formatter, immutable, children, ...props }) {
+  function toggleBind(path) {
+    const lens = lensPath(Array.isArray(path) ? path : [path]);
+
+    return {
+      checked: R.view(lens, thisBind.state),
+      onChange: createToggleHandler(path),
+    };
+  }
+
+  function BoundInput({
+    type,
+    path,
+    formatter,
+    immutable,
+    children,
+    boolean,
+    ...props
+  }) {
     switch (type) {
       case 'color':
       case 'date':
@@ -104,10 +171,12 @@ export default function createBoundInput(thisBind) {
           throw new Error('BoundInput: binding Immutable.JS state to checkboxes is currently uninmplemented.');
         }
 
+        const bind = boolean ? toggleBind : checkboxBind;
+
         return (
           <input
             type={type}
-            {...checkboxBind(path)}
+            {...bind(path, props.value)}
             {...R.omit(['checked', 'onChange'], props)}
           />
         );
@@ -120,22 +189,26 @@ export default function createBoundInput(thisBind) {
 
   BoundInput.propTypes = {
     type: PropTypes.string.isRequired,
-    path: PropTypes.oneOf([
-      PropTypes.string,
+    path: PropTypes.oneOfType([
+      PropTypes.string.isRequired,
       PropTypes.array,
     ]).isRequired,
     formatter: PropTypes.func,
     immutable: PropTypes.bool,
-    children: PropTypes.oneOf([
+    children: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.node),
       PropTypes.node,
     ]),
+    boolean: PropTypes.bool,
+    value: PropTypes.string,
   };
 
   BoundInput.defaultProps = {
     formatter: undefined,
     immutable: false,
+    boolean: false,
     children: null,
+    value: undefined,
   };
 
   return BoundInput;
