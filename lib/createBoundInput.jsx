@@ -6,11 +6,18 @@ import bindState from './bindState';
 import bindStateImmutable from './bindStateImmutable';
 
 const lensPath = R.memoize(R.lensPath);
-
+/**
+ * Creates the BoundInput component.
+ *
+ * @function
+ * @param thisBind {React.Component} `this` of the component the function is used in.
+ * @returns {createBoundInput~BoundInput}
+ */
 export default function createBoundInput(thisBind) {
   const bindDefault = bindState(thisBind);
   const bindImmutable = bindStateImmutable(thisBind);
 
+  // Utility function used to toggle a certain value in array.
   function toggleInArray(array, value) {
     return array.includes(value)
       ? R.without([value], array)
@@ -34,7 +41,6 @@ export default function createBoundInput(thisBind) {
     }
 
     const lens = lensPath(path);
-
     const head = R.head(path);
     const tail = R.tail(path);
 
@@ -76,7 +82,6 @@ export default function createBoundInput(thisBind) {
     }
 
     const lens = lensPath(path);
-
     const head = R.head(path);
     const tail = R.tail(path);
 
@@ -98,7 +103,14 @@ export default function createBoundInput(thisBind) {
   });
 
   function checkboxBind(path, value) {
-    const lens = lensPath(Array.isArray(path) ? path : [path]);
+    if (!Array.isArray(path)) {
+      return {
+        checked: thisBind.state[path].includes(value),
+        onChange: createCheckboxHandler(path),
+      };
+    }
+
+    const lens = lensPath(path);
 
     return {
       checked: R.view(lens, thisBind.state).includes(value),
@@ -107,7 +119,14 @@ export default function createBoundInput(thisBind) {
   }
 
   function toggleBind(path) {
-    const lens = lensPath(Array.isArray(path) ? path : [path]);
+    if (!Array.isArray(path)) {
+      return {
+        checked: thisBind.state[path],
+        onChange: createToggleHandler(path),
+      };
+    }
+
+    const lens = lensPath(path);
 
     return {
       checked: R.view(lens, thisBind.state),
@@ -115,6 +134,24 @@ export default function createBoundInput(thisBind) {
     };
   }
 
+  /**
+   * The main BoundInput component.
+   *
+   * @function
+   * @type type {string} Type of the input, including select which allows you to embed
+   * the options used as children.
+   *
+   * @param path {Array.<string|number>|string} The path in the state to bind to.
+   *
+   * @param formatter {function} Optional formatter for the input value, for example
+   * for numeric fields. Cannot be used with checkboxes.
+   *
+   * @param immutable {boolean} Flag to tell the BoundInput component if the state uses Immutable.JS
+   * containers as part of its state. Defaults to false.
+   *
+   * @param boolean {boolean} Switches between boolean/value mode in checkboxes. No-op if used
+   * with other input types (for now, atleas). Defaults to false.
+   */
   function BoundInput({
     type,
     path,
