@@ -126,9 +126,9 @@ export default function createBoundInput(thisBind) {
     ]).isRequired,
     formatter: PropTypes.func,
     immutable: PropTypes.bool,
-    children: React.PropTypes.oneOfType([
-      React.PropTypes.arrayOf(React.PropTypes.node),
-      React.PropTypes.node,
+    children: PropTypes.oneOf([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
     ]),
   };
 
