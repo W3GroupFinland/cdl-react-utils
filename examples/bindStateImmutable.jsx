@@ -53,7 +53,7 @@ export default class TodoExample extends Component {
               {...bind(['todo', 'description'])}
             />
           </div>
-          <input type="button" value="Add todo" />
+          <input type="submit" value="Add todo" />
         </form>
         {todos.map(({ name, description }) => (
           <div key={name} className="todo">
