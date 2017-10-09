@@ -22,3 +22,5 @@ npm run lint:fix # Run the linter and attempt to fix some of the errors automati
 npm run generate-docs # Re-generate the documentation.
 
 ```
+
+**NOTE:** default exports MUST be separate from the lines the exports are defined on; e.g. `export default function createReducer(...` causes the JSDoc generation to not see the function and omits it from the documentation.

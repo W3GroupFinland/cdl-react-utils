@@ -13,7 +13,7 @@ const lensPath = R.memoize(R.lensPath);
  * @param thisBind {React.Component} `this` of the component the function is used in.
  * @returns {createBoundInput~BoundInput}
  */
-export default function createBoundInput(thisBind) {
+function createBoundInput(thisBind) {
   const bindDefault = bindState(thisBind);
   const bindImmutable = bindStateImmutable(thisBind);
 
@@ -138,10 +138,10 @@ export default function createBoundInput(thisBind) {
    * The main BoundInput component.
    *
    * @function
-   * @type type {string} Type of the input, including select which allows you to embed
+   * @param type {string} Type of the input, including select which allows you to embed
    * the options used as children.
    *
-   * @param path {Array.<string|number>|string} The path in the state to bind to.
+   * @param path {Array|string} The path in the state to bind to.
    *
    * @param formatter {function} Optional formatter for the input value, for example
    * for numeric fields. Cannot be used with checkboxes.
@@ -250,3 +250,5 @@ export default function createBoundInput(thisBind) {
 
   return BoundInput;
 }
+
+export default createBoundInput;
