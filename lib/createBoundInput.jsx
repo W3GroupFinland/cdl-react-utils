@@ -149,8 +149,8 @@ function createBoundInput(thisBind) {
    * @param immutable {boolean} Flag to tell the BoundInput component if the state uses Immutable.JS
    * containers as part of its state. Defaults to false.
    *
-   * @param boolean {boolean} Switches between boolean/value mode in checkboxes. No-op if used
-   * with other input types (for now, atleas). Defaults to false.
+   * @param boolean {boolean} Flag to switch between boolean/value mode in checkboxes. No-op if used
+   * with other input types (for now, at least). Defaults to false.
    */
   function BoundInput({
     type,

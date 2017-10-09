@@ -81,7 +81,7 @@ The main BoundInput component.
 | path | <code>Array</code> \| <code>string</code> | The path in the state to bind to. |
 | formatter | <code>function</code> | Optional formatter for the input value, for example for numeric fields. Cannot be used with checkboxes. |
 | immutable | <code>boolean</code> | Flag to tell the BoundInput component if the state uses Immutable.JS containers as part of its state. Defaults to false. |
-| boolean | <code>boolean</code> | Switches between boolean/value mode in checkboxes. No-op if used with other input types (for now, atleas). Defaults to false. |
+| boolean | <code>boolean</code> | Flag to switch between boolean/value mode in checkboxes. No-op if used with other input types (for now, at least). Defaults to false. |
 
 <a name="createReducer"></a>
 
