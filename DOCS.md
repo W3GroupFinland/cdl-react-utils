@@ -7,6 +7,9 @@
 <dt><a href="#bindStateImmutable">bindStateImmutable(thisBind)</a> ⇒ <code><a href="#bindStateImmutable..innerBind">innerBind</a></code></dt>
 <dd><p>Utility for two-way-binding Immutable.JS objects in React component state.</p>
 </dd>
+<dt><a href="#createBoundInput">createBoundInput(thisBind)</a> ⇒ <code><a href="#createBoundInput..BoundInput">BoundInput</a></code></dt>
+<dd><p>Creates the BoundInput component.</p>
+</dd>
 <dt><a href="#createReducer">createReducer(initialState, reducers)</a></dt>
 <dd><p>Utility for creating Redux reducers.</p>
 </dd>
@@ -53,6 +56,32 @@ Utility for two-way-binding Immutable.JS objects in React component state.
 | --- | --- | --- |
 | path | <code>Array.&lt;(string\|number)&gt;</code> | The path in the state to bind to. Must be atleast two keys deep. |
 | formatter | <code>function</code> | Optional formatter for the input value, for example for numeric fields. |
+
+<a name="createBoundInput"></a>
+
+## createBoundInput(thisBind) ⇒ [<code>BoundInput</code>](#createBoundInput..BoundInput)
+Creates the BoundInput component.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| thisBind | <code>React.Component</code> | `this` of the component the function is used in. |
+
+<a name="createBoundInput..BoundInput"></a>
+
+### createBoundInput~BoundInput(type, path, formatter, immutable, boolean)
+The main BoundInput component.
+
+**Kind**: inner method of [<code>createBoundInput</code>](#createBoundInput)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| type | <code>string</code> | Type of the input, including select which allows you to embed the options used as children. |
+| path | <code>Array</code> \| <code>string</code> | The path in the state to bind to. |
+| formatter | <code>function</code> | Optional formatter for the input value, for example for numeric fields. Cannot be used with checkboxes. |
+| immutable | <code>boolean</code> | Flag to tell the BoundInput component if the state uses Immutable.JS containers as part of its state. Defaults to false. |
+| boolean | <code>boolean</code> | Flag to switch between boolean/value mode in checkboxes. No-op if used with other input types (for now, at least). Defaults to false. |
 
 <a name="createReducer"></a>
 

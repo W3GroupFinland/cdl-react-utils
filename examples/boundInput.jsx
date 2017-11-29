@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { List } from 'immutable';
-import { bindState } from 'cdl-react-utils';
+import { createBoundInput } from 'cdl-react-utils';
 
 export default class TodoExample extends Component {
   state = {
@@ -12,7 +12,7 @@ export default class TodoExample extends Component {
     todos: List(),
   }
 
-  bind = bindState(this);
+  BoundInput = createBoundInput(this);
 
   addTodo = (evt) => {
     evt.preventDefault();
@@ -35,7 +35,7 @@ export default class TodoExample extends Component {
   }
 
   render() {
-    const { bind, addTodo } = this;
+    const { BoundInput, addTodo } = this;
     const { todos } = this.state;
 
     return (
@@ -44,18 +44,18 @@ export default class TodoExample extends Component {
           <h2>Todos</h2>
           <div className="input-group">
             <label htmlFor="todo-name">Name</label>
-            <input
+            <BoundInput
               type="text"
               id="todo-name"
-              {...bind(['todo', 'name'])}
+              path={['todo', 'name']}
             />
           </div>
           <div className="input-group">
             <label htmlFor="todo-description">Description</label>
-            <input
+            <BoundInput
               type="text"
-              id="todo-description"
-              {...bind(['todo', 'description'])}
+              id="todo-name"
+              path={['todo', 'description']}
             />
           </div>
           <input type="submit" value="Add todo" />
